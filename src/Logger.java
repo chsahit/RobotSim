@@ -7,17 +7,14 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 public class Logger {
-	private Writer writer;
-	String filename;
-	public Logger() {
-		this("datalog.csv");
+	private static Writer writer;
+	private String filename;
+	
+	public static void init() {
+		init("datalog.csv");
 	}
 	
-	public Logger(String filename) {
-		this.filename = filename;
-	}
-	
-	public void init() {
+	public static void init(String filename) {
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(filename), "utf-8"));
@@ -27,7 +24,7 @@ public class Logger {
 		}
 	}
 	
-	public void writeData(String data) {
+	public static void writeData(String data) {
 		try {
 			writer.write(data + "\n");
 		} catch (IOException e) {
@@ -35,11 +32,11 @@ public class Logger {
 		}
 	}
 	
-	public void writeData(float f) {
+	public static void writeData(float f) {
 		writeData(f + "");
 	}
 	
-	public void close() {
+	public static void close() {
 		try {
 			writer.close();
 		} catch (IOException e) {
