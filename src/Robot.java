@@ -8,28 +8,44 @@ import org.jbox2d.dynamics.World;
 
 public class Robot {	
 	World world;
-	BodyDef bd; 
-	FixtureDef fd;
-	PolygonShape botShape;
-	Body robot;
+	BodyDef bdRobot, bdFloor; 
+	FixtureDef fdRobot, fdFloor;
+	PolygonShape botShape, floorShape;
+	Body robot, floor;
 	float timeStep = 1.0f/60.0f;	
     int velocityIterations = 6, positionIterations = 2;
 	public Robot() {
+		//create world
 		timeStep = 1.0f/60.0f;
-		world = new World(new Vec2(0,0),true);
-		bd = new BodyDef();
-			bd.position.set(0,0);
-		bd.type = BodyType.DYNAMIC;
+		world = new World(new Vec2(0,-10.0f),true);
+		//create robot
+		bdRobot = new BodyDef();
+			bdRobot.position.set(0,0);
+		bdRobot.type = BodyType.DYNAMIC;
 		botShape = new PolygonShape();
 		botShape.setAsBox(0.5f, 0.5f);		
-		fd = new FixtureDef();
-			fd.shape = botShape;
-			fd.density = 1f;
-			fd.friction = 0.3f;        
-			fd.restitution = 0.5f;
-		robot = world.createBody(bd);
-		robot.createFixture(fd);	
+		fdRobot = new FixtureDef();
+			fdRobot.shape = botShape;
+			fdRobot.density = 1f;
+			fdRobot.friction = 0.25f;        
+			fdRobot.restitution = 0.0f;
+		robot = world.createBody(bdRobot);
+		robot.createFixture(fdRobot);	
 		robot.setLinearDamping(0.3f);
+		//create floor
+		floorShape = new PolygonShape();
+		fdFloor = new FixtureDef();
+			fdFloor.shape = floorShape;
+			fdFloor.density = 1;
+			fdFloor.friction = 0.25f;
+		bdFloor = new BodyDef();
+			bdFloor.type = BodyType.STATIC;
+			bdFloor.position.set(-10f, -0.5f);
+		floor = world.createBody(bdFloor);
+		floorShape.setAsEdge(new Vec2(-0.5f,0f), new Vec2(200f, 0f));
+		floor.createFixture(fdFloor);
+		System.out.println();
+		
 	}
 	
 	public void set(float input) {

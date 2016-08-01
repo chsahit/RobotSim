@@ -21,7 +21,7 @@ public class Logger {
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(filename), "utf-8"));
-		} catch (Exception e) {
+		} catch (UnsupportedEncodingException | FileNotFoundException e) {
 			writer = null;
 			e.printStackTrace();
 		}
@@ -30,7 +30,7 @@ public class Logger {
 	public void writeData(String data) {
 		try {
 			writer.write(data + "\n");
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
