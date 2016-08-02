@@ -29,7 +29,7 @@ public class IdealPIDLoop {
 	public float getOutputWithLookback(float position, float time) {
 		error = setpoint - position;
 		lookback.add((time - lasttime) * error);
-		if (lookback.size() > 100) {
+		if (lookback.size() > 300) {
 			lookback.poll();
 		}
 		netError = sum(lookback);
@@ -37,6 +37,8 @@ public class IdealPIDLoop {
 		System.out.println(dError + " " + (time - lasttime));
 		lasttime = time;
 		lasterror = error;
+		Logger.writeData((error * kP) + "," + (netError * kI) + "," + 
+				(dError * kD) + "," + position);
 		return ((error * kP) + (netError * kI) + (dError * kD));
 	}
 	
