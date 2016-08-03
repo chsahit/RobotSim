@@ -7,6 +7,7 @@ public class PIDLoop {
 	float lasttime = -1, lasterror;
 	float error, netError = 0, dError;
 	Queue<Float> lookback; 
+	Profile profile;
 	public PIDLoop(float kP, float kI, float kD, float sp) {
 		this.kP = kP;
 		this.kI = kI;
@@ -14,6 +15,11 @@ public class PIDLoop {
 		this.setpoint = sp;
 		lasterror = setpoint;
 		lookback = new LinkedList<Float>();
+	}
+	
+	public PIDLoop(float kP, float kI, float kD, Profile profile) {
+		this(kP, kI, kD, profile.sp);
+		this.profile = profile;
 	}
 	
 	public float getIdealOutput(float position, float time) {
@@ -61,6 +67,11 @@ public class PIDLoop {
 			return ((netError * kI) + (dError * kD));
 		}
 		
+	}
+	
+	public float getProfiledOutput(float position, float time) {
+		assert profile != null;		
+		return 0f;
 	}
 	
 	private float sum(Queue<Float> list) {
