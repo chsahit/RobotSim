@@ -49,7 +49,7 @@ public class PIDLoop {
 			return (kP * error);
 		} else {
 			lookback.add((time - lasttime) * error);
-			if (lookback.size() > 500) {
+			if (lookback.size() > 750) {
 				lookback.poll();
 			}
 			netError = sum(lookback);
